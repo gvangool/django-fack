@@ -13,12 +13,40 @@ class FAQViewTests(django.test.TestCase):
 
     def setUp(self):
         # Make some test templates available.
-        self._oldtd = settings.TEMPLATE_DIRS
-        settings.TEMPLATE_DIRS = [os.path.join(os.path.dirname(__file__), 'templates')]
+        try:
+            self._original_templates = settings.TEMPLATES
+            settings.TEMPLATES = [
+                {
+                    'BACKEND': 'django.template.backends.django.DjangoTemplates',
+                    'DIRS': [
+                        os.path.normpath(os.path.join(os.path.dirname(__file__), 'templates')),
+                    ],
+                    'APP_DIRS': True,
+                    'OPTIONS': {
+                        'context_processors': [
+                            'django.contrib.auth.context_processors.auth',
+                            'django.template.context_processors.debug',
+                            'django.template.context_processors.i18n',
+                            'django.template.context_processors.media',
+                            'django.template.context_processors.static',
+                            'django.template.context_processors.tz',
+                            'django.contrib.messages.context_processors.messages',
+                        ],
+                    },
+                },
+            ]
+        except AttributeError:
+            # Old style TEMPLATE_DIRS
+            self._original_templates = None
+            self._oldtd = settings.TEMPLATE_DIRS
+            settings.TEMPLATE_DIRS = [os.path.join(os.path.dirname(__file__), 'templates')]
 
     def tearDown(self):
-        settings.TEMPLATE_DIRS = self._oldtd
-    
+        if self._original_templates is not None:
+            settings.TEMPLATES = self._original_templates
+        else:
+            settings.TEMPLATE_DIRS = self._oldtd
+
     def test_submit_faq_get(self):
         response = self.client.get('/submit/')
         self.assertEqual(response.status_code, 200)

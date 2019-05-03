@@ -51,7 +51,12 @@ class Question(models.Model):
 
     text = models.TextField(_("question"), help_text=_("The actual question itself."))
     answer = models.TextField(_("answer"), blank=True, help_text=_("The answer text."))
-    topic = models.ForeignKey(Topic, verbose_name=_("topic"), related_name="questions")
+    topic = models.ForeignKey(
+        Topic,
+        verbose_name=_("topic"),
+        related_name="questions",
+        on_delete=models.CASCADE,
+    )
     slug = models.SlugField(_("slug"), max_length=100)
     status = models.IntegerField(
         _("status"),
@@ -81,10 +86,18 @@ class Question(models.Model):
     created_on = models.DateTimeField(_("created on"), default=datetime.datetime.now)
     updated_on = models.DateTimeField(_("updated on"))
     created_by = models.ForeignKey(
-        AUTH_USER_MODEL, verbose_name=_("created by"), null=True, related_name="+"
+        AUTH_USER_MODEL,
+        verbose_name=_("created by"),
+        null=True,
+        related_name="+",
+        on_delete=models.SET_NULL,
     )
     updated_by = models.ForeignKey(
-        AUTH_USER_MODEL, verbose_name=_("updated by"), null=True, related_name="+"
+        AUTH_USER_MODEL,
+        verbose_name=_("updated by"),
+        null=True,
+        related_name="+",
+        on_delete=models.SET_NULL,
     )
 
     objects = QuestionQuerySet.as_manager()

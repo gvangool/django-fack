@@ -76,6 +76,7 @@ class Migration(migrations.Migration):
                         verbose_name="created by",
                         related_name="+",
                         null=True,
+                        on_delete=models.DO_NOTHING,
                     ),
                 ),
             ],
@@ -118,7 +119,10 @@ class Migration(migrations.Migration):
             model_name="question",
             name="topic",
             field=models.ForeignKey(
-                to="fack.Topic", verbose_name="topic", related_name="questions"
+                to="fack.Topic",
+                verbose_name="topic",
+                related_name="questions",
+                on_delete=models.DO_NOTHING,
             ),
         ),
         migrations.AddField(
@@ -129,6 +133,7 @@ class Migration(migrations.Migration):
                 verbose_name="updated by",
                 related_name="+",
                 null=True,
+                on_delete=models.DO_NOTHING,
             ),
         ),
     ]

@@ -1,7 +1,6 @@
 {% extends "faq/base.html" %}
 
 {% block body %}
-{% load url from future %}
 <h2>Welcome to the django-fack example project</h2>
 <p>
   If you aren't seeing any data below, or if you're getting random 404s, make
@@ -40,7 +39,7 @@
   </dd>
   
   <dt>
-    Speaking of the admin, here's <a href="{% url "admin:app_list" "faq" %}">the FAQ admin</a>.
+    Speaking of the admin, here's <a href="{% url "admin:app_list" "fack" %}">the FAQ admin</a>.
   </dt>
   <dd>
     Remember that you can clean up submitted questions in the admin before the

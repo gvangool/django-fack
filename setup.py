@@ -16,6 +16,7 @@ setup(
     url = 'http://django-fack.rtfd.org/',
 
     packages = find_packages(exclude=['example']),
+    include_package_data=True,
     zip_safe = False,
 
     classifiers = [

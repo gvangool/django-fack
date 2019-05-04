@@ -5,6 +5,13 @@ import unittest
 import django.test
 from django import template
 
+try:
+    from django.template.base import TokenType
+except ImportError:  # Django 1.11, 2.0
+    from django.template.base import TOKEN_BLOCK
+else:
+    TOKEN_BLOCK = TokenType.BLOCK
+
 from ..models import Topic
 from ..templatetags import faqtags
 
@@ -23,7 +30,7 @@ class FAQTagsSyntaxTests(unittest.TestCase):
 
         Assumes the tag doesn't use the parser, so this won't work for block tags.
         """
-        t = template.base.Token(template.base.TOKEN_BLOCK, token_contents)
+        t = template.base.Token(TOKEN_BLOCK, token_contents)
         return tagfunc(None, t)
 
     def test_faqs_for_topic_compile(self):

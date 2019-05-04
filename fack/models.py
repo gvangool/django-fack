@@ -6,6 +6,7 @@ import django
 from django.conf import settings
 from django.db import models
 from django.template.defaultfilters import slugify
+from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 
 from .managers import QuestionManager, QuestionQuerySet
@@ -34,9 +35,8 @@ class Topic(models.Model):
     def __str__(self):
         return self.name
 
-    @models.permalink
     def get_absolute_url(self):
-        return ("faq_topic_detail", [self.slug])
+        return reverse('faq_topic_detail', kwargs={'slug': self.slug})
 
 
 class Question(models.Model):
@@ -110,9 +110,8 @@ class Question(models.Model):
     def __str__(self):
         return self.text
 
-    @models.permalink
     def get_absolute_url(self):
-        return ("faq_question_detail", [self.topic.slug, self.slug])
+        return reverse('faq_question_detail', kwargs={'topic_slug': self.topic.slug, 'slug': self.slug})
 
     def save(self, *args, **kwargs):
         # Set the date updated.

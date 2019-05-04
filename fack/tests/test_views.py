@@ -7,9 +7,10 @@ import os
 from django.conf import settings
 from ..models import Topic, Question
 
+
 class FAQViewTests(django.test.TestCase):
-    urls = 'fack.urls'
-    fixtures = ['faq_test_data.json']
+    urls = "fack.urls"
+    fixtures = ["faq_test_data.json"]
 
     def setUp(self):
         # Make some test templates available.
@@ -17,29 +18,33 @@ class FAQViewTests(django.test.TestCase):
             self._original_templates = settings.TEMPLATES
             settings.TEMPLATES = [
                 {
-                    'BACKEND': 'django.template.backends.django.DjangoTemplates',
-                    'DIRS': [
-                        os.path.normpath(os.path.join(os.path.dirname(__file__), 'templates')),
+                    "BACKEND": "django.template.backends.django.DjangoTemplates",
+                    "DIRS": [
+                        os.path.normpath(
+                            os.path.join(os.path.dirname(__file__), "templates")
+                        )
                     ],
-                    'APP_DIRS': True,
-                    'OPTIONS': {
-                        'context_processors': [
-                            'django.contrib.auth.context_processors.auth',
-                            'django.template.context_processors.debug',
-                            'django.template.context_processors.i18n',
-                            'django.template.context_processors.media',
-                            'django.template.context_processors.static',
-                            'django.template.context_processors.tz',
-                            'django.contrib.messages.context_processors.messages',
-                        ],
+                    "APP_DIRS": True,
+                    "OPTIONS": {
+                        "context_processors": [
+                            "django.contrib.auth.context_processors.auth",
+                            "django.template.context_processors.debug",
+                            "django.template.context_processors.i18n",
+                            "django.template.context_processors.media",
+                            "django.template.context_processors.static",
+                            "django.template.context_processors.tz",
+                            "django.contrib.messages.context_processors.messages",
+                        ]
                     },
-                },
+                }
             ]
         except AttributeError:
             # Old style TEMPLATE_DIRS
             self._original_templates = None
             self._oldtd = settings.TEMPLATE_DIRS
-            settings.TEMPLATE_DIRS = [os.path.join(os.path.dirname(__file__), 'templates')]
+            settings.TEMPLATE_DIRS = [
+                os.path.join(os.path.dirname(__file__), "templates")
+            ]
 
     def tearDown(self):
         if self._original_templates is not None:
@@ -48,66 +53,68 @@ class FAQViewTests(django.test.TestCase):
             settings.TEMPLATE_DIRS = self._oldtd
 
     def test_submit_faq_get(self):
-        response = self.client.get('/submit/')
+        response = self.client.get("/submit/")
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "faq/submit_question.html")
 
-    @mock.patch('fack.views.messages')
+    @mock.patch("fack.views.messages")
     def test_submit_faq_post(self, mock_messages):
         data = {
-            'topic': '1',
-            'text': 'What is your favorite color?',
-            'answer': 'Blue. I mean red. I mean *AAAAHHHHH....*',
+            "topic": "1",
+            "text": "What is your favorite color?",
+            "answer": "Blue. I mean red. I mean *AAAAHHHHH....*",
         }
-        response = self.client.post('/submit/', data)
+        response = self.client.post("/submit/", data)
         self.assertEqual(mock_messages.success.call_count, 1)
         self.assertRedirects(response, "/submit/thanks/")
         self.assert_(
-            Question.objects.filter(text=data['text']).exists(),
-            "Expected question object wasn't created."
+            Question.objects.filter(text=data["text"]).exists(),
+            "Expected question object wasn't created.",
         )
-        
+
     def test_submit_thanks(self):
-        response = self.client.get('/submit/thanks/')
+        response = self.client.get("/submit/thanks/")
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "faq/submit_thanks.html")
-    
+
     def test_faq_index(self):
-        response = self.client.get('/')
+        response = self.client.get("/")
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "faq/topic_list.html")
         self.assertQuerysetEqual(
             response.context["topics"],
-            ["<Topic: Silly questions>", "<Topic: Serious questions>"]
+            ["<Topic: Silly questions>", "<Topic: Serious questions>"],
         )
         self.assertEqual(
-            response.context['last_updated'],
-            Question.objects.order_by('-updated_on')[0].updated_on
+            response.context["last_updated"],
+            Question.objects.order_by("-updated_on")[0].updated_on,
         )
-        
+
     def test_topic_detail(self):
-        response = self.client.get('/silly-questions/')
+        response = self.client.get("/silly-questions/")
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "faq/topic_detail.html")
         self.assertEqual(
-            response.context['topic'],
-            Topic.objects.get(slug="silly-questions")
+            response.context["topic"], Topic.objects.get(slug="silly-questions")
         )
         self.assertEqual(
-            response.context['last_updated'],
-            Topic.objects.get(slug='silly-questions').questions.order_by('-updated_on')[0].updated_on
+            response.context["last_updated"],
+            Topic.objects.get(slug="silly-questions")
+            .questions.order_by("-updated_on")[0]
+            .updated_on,
         )
         self.assertQuerysetEqual(
             response.context["questions"],
-            ["<Question: What is your favorite color?>", 
-             "<Question: What is your quest?>"]
+            [
+                "<Question: What is your favorite color?>",
+                "<Question: What is your quest?>",
+            ],
         )
-    
+
     def test_question_detail(self):
-        response = self.client.get('/silly-questions/your-quest/')
+        response = self.client.get("/silly-questions/your-quest/")
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "faq/question_detail.html")
         self.assertEqual(
-            response.context["question"],
-            Question.objects.get(slug="your-quest")
+            response.context["question"], Question.objects.get(slug="your-quest")
         )

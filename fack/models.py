@@ -12,7 +12,7 @@ from django.utils.encoding import python_2_unicode_compatible
 from .managers import QuestionManager, QuestionQuerySet
 
 
-AUTH_USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
+AUTH_USER_MODEL = getattr(settings, "AUTH_USER_MODEL", "auth.User")
 
 
 @python_2_unicode_compatible
@@ -20,22 +20,26 @@ class Topic(models.Model):
     """
     Generic Topics for FAQ question grouping
     """
-    name = models.CharField(_('name'), max_length=150)
-    slug = models.SlugField(_('slug'), max_length=150)
-    sort_order = models.IntegerField(_('sort order'), default=0,
-        help_text=_('The order you would like the topic to be displayed.'))
+
+    name = models.CharField(_("name"), max_length=150)
+    slug = models.SlugField(_("slug"), max_length=150)
+    sort_order = models.IntegerField(
+        _("sort order"),
+        default=0,
+        help_text=_("The order you would like the topic to be displayed."),
+    )
 
     class Meta:
         verbose_name = _("Topic")
         verbose_name_plural = _("Topics")
-        ordering = ['sort_order', 'name']
+        ordering = ["sort_order", "name"]
 
     def __str__(self):
         return self.name
 
     @models.permalink
     def get_absolute_url(self):
-        return ('faq_topic_detail', [self.slug])
+        return ("faq_topic_detail", [self.slug])
 
 
 @python_2_unicode_compatible
@@ -44,33 +48,48 @@ class Question(models.Model):
     ACTIVE = 1
     INACTIVE = 0
     STATUS_CHOICES = (
-        (ACTIVE,    _('Active')),
-        (INACTIVE,  _('Inactive')),
-        (HEADER,    _('Group Header')),
+        (ACTIVE, _("Active")),
+        (INACTIVE, _("Inactive")),
+        (HEADER, _("Group Header")),
     )
 
-    text = models.TextField(_('question'), help_text=_('The actual question itself.'))
-    answer = models.TextField(_('answer'), blank=True, help_text=_('The answer text.'))
-    topic = models.ForeignKey(Topic, verbose_name=_('topic'), related_name='questions')
-    slug = models.SlugField(_('slug'), max_length=100)
-    status = models.IntegerField(_('status'),
-        choices=STATUS_CHOICES, default=INACTIVE,
-        help_text=_("Only questions with their status set to 'Active' will be "
-                    "displayed. Questions marked as 'Group Header' are treated "
-                    "as such by views and templates that are set up to use them."))
+    text = models.TextField(_("question"), help_text=_("The actual question itself."))
+    answer = models.TextField(_("answer"), blank=True, help_text=_("The answer text."))
+    topic = models.ForeignKey(Topic, verbose_name=_("topic"), related_name="questions")
+    slug = models.SlugField(_("slug"), max_length=100)
+    status = models.IntegerField(
+        _("status"),
+        choices=STATUS_CHOICES,
+        default=INACTIVE,
+        help_text=_(
+            "Only questions with their status set to 'Active' will be "
+            "displayed. Questions marked as 'Group Header' are treated "
+            "as such by views and templates that are set up to use them."
+        ),
+    )
 
-    protected = models.BooleanField(_('is protected'), default=False,
-        help_text=_("Set true if this question is only visible by authenticated users."))
+    protected = models.BooleanField(
+        _("is protected"),
+        default=False,
+        help_text=_(
+            "Set true if this question is only visible by authenticated users."
+        ),
+    )
 
-    sort_order = models.IntegerField(_('sort order'), default=0,
-        help_text=_('The order you would like the question to be displayed.'))
+    sort_order = models.IntegerField(
+        _("sort order"),
+        default=0,
+        help_text=_("The order you would like the question to be displayed."),
+    )
 
-    created_on = models.DateTimeField(_('created on'), default=datetime.datetime.now)
-    updated_on = models.DateTimeField(_('updated on'))
-    created_by = models.ForeignKey(AUTH_USER_MODEL, verbose_name=_('created by'),
-        null=True, related_name="+")
-    updated_by = models.ForeignKey(AUTH_USER_MODEL, verbose_name=_('updated by'),
-        null=True, related_name="+")
+    created_on = models.DateTimeField(_("created on"), default=datetime.datetime.now)
+    updated_on = models.DateTimeField(_("updated on"))
+    created_by = models.ForeignKey(
+        AUTH_USER_MODEL, verbose_name=_("created by"), null=True, related_name="+"
+    )
+    updated_by = models.ForeignKey(
+        AUTH_USER_MODEL, verbose_name=_("updated by"), null=True, related_name="+"
+    )
 
     if django.VERSION >= (1, 7):
         objects = QuestionQuerySet.as_manager()
@@ -80,14 +99,14 @@ class Question(models.Model):
     class Meta:
         verbose_name = _("Frequent asked question")
         verbose_name_plural = _("Frequently asked questions")
-        ordering = ['sort_order', 'created_on']
+        ordering = ["sort_order", "created_on"]
 
     def __str__(self):
         return self.text
 
     @models.permalink
     def get_absolute_url(self):
-        return ('faq_question_detail', [self.topic.slug, self.slug])
+        return ("faq_question_detail", [self.topic.slug, self.slug])
 
     def save(self, *args, **kwargs):
         # Set the date updated.

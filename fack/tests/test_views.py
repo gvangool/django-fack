@@ -58,7 +58,7 @@ class FAQViewTests(django.test.TestCase):
         response = self.client.post("/submit/", data)
         self.assertEqual(mock_messages.success.call_count, 1)
         self.assertRedirects(response, "/submit/thanks/")
-        self.assert_(
+        self.assertTrue(
             Question.objects.filter(text=data["text"]).exists(),
             "Expected question object wasn't created.",
         )

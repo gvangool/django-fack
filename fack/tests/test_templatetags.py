@@ -122,7 +122,7 @@ class FAQTagsNodeTests(django.test.TestCase):
         node = faqtags.FaqListNode(num="number", topic="topic", varname="faqs")
         content = node.render(context)
         self.assertEqual(content, "")
-        self.assert_(
+        self.assertTrue(
             "faqs" not in context,
             "faqs variable shouldn't have been added to the context.",
         )
@@ -158,7 +158,7 @@ class FAQTagsNodeTests(django.test.TestCase):
         node = faqtags.FaqListNode(num="number", varname="faqs")
         content = node.render(context)
         self.assertEqual(content, "")
-        self.assert_(
+        self.assertTrue(
             "faqs" not in context,
             "faqs variable shouldn't have been added to the context.",
         )
@@ -168,5 +168,5 @@ class FAQTagsNodeTests(django.test.TestCase):
         node = faqtags.TopicListNode(varname="topic_list")
         content = node.render(context)
         self.assertEqual(content, "")
-        self.assert_("topic_list" in context, "topic_list should be in context")
+        self.assertTrue("topic_list" in context, "topic_list should be in context")
         self.assertEqual(len(context["topic_list"]), 2)

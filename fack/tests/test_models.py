@@ -3,7 +3,7 @@ from __future__ import absolute_import
 import datetime
 
 import django.test
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from ..models import Question, Topic
 

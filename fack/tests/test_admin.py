@@ -8,6 +8,8 @@ callbacks.
 
 from __future__ import absolute_import
 
+import unittest
+
 import mock
 from django import forms
 from django.contrib import admin
@@ -16,11 +18,6 @@ from django.http import HttpRequest
 
 from ..admin import QuestionAdmin
 from ..models import Question
-
-try:
-    from django.utils import unittest
-except ImportError:  # Django >= 1.9
-    import unittest
 
 
 class FAQAdminTests(unittest.TestCase):

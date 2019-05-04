@@ -1,9 +1,9 @@
 from __future__ import absolute_import
 
 from django.contrib import messages
-from django.core.urlresolvers import reverse
 from django.db.models import Max
 from django.shortcuts import get_object_or_404
+from django.urls import reverse
 from django.utils.translation import ugettext as _
 from django.views.generic import CreateView, DetailView, ListView, TemplateView
 
@@ -53,7 +53,7 @@ class TopicDetail(DetailView):
         # Include a list of questions this user has access to. If the user is
         # logged in, this includes protected questions. Otherwise, not.
         qs = self.object.questions.active()
-        if self.request.user.is_anonymous():
+        if self.request.user.is_anonymous:
             qs = qs.exclude(protected=True)
 
         data = super(TopicDetail, self).get_context_data(**kwargs)
@@ -78,7 +78,7 @@ class QuestionDetail(DetailView):
         # even on a new model.
         # FIXME: similar logic as above. This should push down into managers.
         qs = super(QuestionDetail, self).get_queryset().filter(topic=topic)
-        if self.request.user.is_anonymous():
+        if self.request.user.is_anonymous:
             qs = qs.exclude(protected=True)
 
         return qs
@@ -93,7 +93,7 @@ class SubmitFAQ(CreateView):
     def get_form_kwargs(self):
         kwargs = super(SubmitFAQ, self).get_form_kwargs()
         kwargs["instance"] = Question()
-        if self.request.user.is_authenticated():
+        if self.request.user.is_authenticated:
             kwargs["instance"].created_by = self.request.user
         return kwargs
 

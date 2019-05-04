@@ -1,15 +1,12 @@
 from __future__ import absolute_import
 
+import unittest
+
 import django.test
 from django import template
 
 from ..models import Topic
 from ..templatetags import faqtags
-
-try:
-    from django.utils import unittest
-except ImportError:  # Django >= 1.9
-    import unittest
 
 
 class FAQTagsSyntaxTests(unittest.TestCase):

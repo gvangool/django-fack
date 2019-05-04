@@ -6,7 +6,6 @@ import django
 from django.conf import settings
 from django.db import models
 from django.template.defaultfilters import slugify
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
 from .managers import QuestionManager, QuestionQuerySet
@@ -14,7 +13,6 @@ from .managers import QuestionManager, QuestionQuerySet
 AUTH_USER_MODEL = getattr(settings, "AUTH_USER_MODEL", "auth.User")
 
 
-@python_2_unicode_compatible
 class Topic(models.Model):
     """
     Generic Topics for FAQ question grouping
@@ -41,7 +39,6 @@ class Topic(models.Model):
         return ("faq_topic_detail", [self.slug])
 
 
-@python_2_unicode_compatible
 class Question(models.Model):
     HEADER = 2
     ACTIVE = 1
@@ -90,10 +87,7 @@ class Question(models.Model):
         AUTH_USER_MODEL, verbose_name=_("updated by"), null=True, related_name="+"
     )
 
-    if django.VERSION >= (1, 7):
-        objects = QuestionQuerySet.as_manager()
-    else:
-        objects = QuestionManager()
+    objects = QuestionQuerySet.as_manager()
 
     class Meta:
         verbose_name = _("Frequent asked question")

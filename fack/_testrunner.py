@@ -16,7 +16,7 @@ settings.configure(
         "django.contrib.sessions",
         "fack",
     ],
-    MIDDLEWARE_CLASSES=[
+    MIDDLEWARE=[
         "django.middleware.common.CommonMiddleware",
         "django.contrib.sessions.middleware.SessionMiddleware",
         "django.middleware.csrf.CsrfViewMiddleware",
@@ -25,8 +25,7 @@ settings.configure(
     ],
     ROOT_URLCONF="fack.urls",
 )
-if hasattr(django, "setup"):
-    django.setup()
+django.setup()
 
 
 def runtests():

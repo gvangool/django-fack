@@ -16,43 +16,32 @@ class FAQViewTests(django.test.TestCase):
 
     def setUp(self):
         # Make some test templates available.
-        try:
-            self._original_templates = settings.TEMPLATES
-            settings.TEMPLATES = [
-                {
-                    "BACKEND": "django.template.backends.django.DjangoTemplates",
-                    "DIRS": [
-                        os.path.normpath(
-                            os.path.join(os.path.dirname(__file__), "templates")
-                        )
-                    ],
-                    "APP_DIRS": True,
-                    "OPTIONS": {
-                        "context_processors": [
-                            "django.contrib.auth.context_processors.auth",
-                            "django.template.context_processors.debug",
-                            "django.template.context_processors.i18n",
-                            "django.template.context_processors.media",
-                            "django.template.context_processors.static",
-                            "django.template.context_processors.tz",
-                            "django.contrib.messages.context_processors.messages",
-                        ]
-                    },
-                }
-            ]
-        except AttributeError:
-            # Old style TEMPLATE_DIRS
-            self._original_templates = None
-            self._oldtd = settings.TEMPLATE_DIRS
-            settings.TEMPLATE_DIRS = [
-                os.path.join(os.path.dirname(__file__), "templates")
-            ]
+        self._original_templates = settings.TEMPLATES
+        settings.TEMPLATES = [
+            {
+                "BACKEND": "django.template.backends.django.DjangoTemplates",
+                "DIRS": [
+                    os.path.normpath(
+                        os.path.join(os.path.dirname(__file__), "templates")
+                    )
+                ],
+                "APP_DIRS": True,
+                "OPTIONS": {
+                    "context_processors": [
+                        "django.contrib.auth.context_processors.auth",
+                        "django.template.context_processors.debug",
+                        "django.template.context_processors.i18n",
+                        "django.template.context_processors.media",
+                        "django.template.context_processors.static",
+                        "django.template.context_processors.tz",
+                        "django.contrib.messages.context_processors.messages",
+                    ]
+                },
+            }
+        ]
 
     def tearDown(self):
-        if self._original_templates is not None:
-            settings.TEMPLATES = self._original_templates
-        else:
-            settings.TEMPLATE_DIRS = self._oldtd
+        settings.TEMPLATES = self._original_templates
 
     def test_submit_faq_get(self):
         response = self.client.get("/submit/")

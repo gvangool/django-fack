@@ -1,18 +1,10 @@
 from __future__ import absolute_import
 
+from django.conf.urls import url
+
 from . import views
 
-try:
-    from django.conf.urls.defaults import *
-except ImportError:
-    from django.conf.urls import url
-
-    try:
-        from django.conf.urls import patterns
-    except ImportError:
-        patterns = None
-
-urls = [
+urlpatterns = [
     url(regex=r"^$", view=views.TopicList.as_view(), name="faq_topic_list"),
     url(regex=r"^submit/$", view=views.SubmitFAQ.as_view(), name="faq_submit"),
     url(
@@ -31,8 +23,3 @@ urls = [
         name="faq_question_detail",
     ),
 ]
-
-if patterns is None:
-    urlpatterns = urls
-else:
-    urlpatterns = patterns("", *urls)

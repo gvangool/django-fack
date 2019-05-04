@@ -27,7 +27,7 @@ __ http://django-fack.rtfd.org/
 Requirements
 ============
 
-Django 1.3+, Python 2.6+.
+Django 1.11+, Python 3.5+.
 
 Installation
 ============
@@ -54,9 +54,9 @@ Example Site
 There is a stand-alone example site distributed with the source in the
 `example/` directory. To try it out:
 
-1. Install django-Fack (see above).
+1. Install django-fack (see above).
 
-1. Run ``python manage.py syncdb``
+1. Run ``python manage.py migrate``
 
    This assumes that sqlite3 is available; if not you'll need to change the
    ``DATABASES`` setting first.
@@ -78,7 +78,7 @@ Contributing
 
 To run the tests, install tox__ (``pip install tox``) then run ``tox``.
 
-__ http://codespeak.net/tox/
+__ https://tox.readthedocs.io/en/latest/
 
 Development `takes place on GitHub`__. Bug reports, pataches, and pull requests
 are always welcome!

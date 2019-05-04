@@ -30,16 +30,16 @@ There is a stand-alone example site distributed with the source in the
 
 1. Install Django-Fack (see above).
 
-1. Run ``python manage.py syncdb`` 
+1. Run ``python manage.py migrate``
 
    This assumes that sqlite3 is available; if not you'll need to change the
    ``DATABASES`` setting first.
 
-3. Load some example data by running 
+3. Load some example data by running
    ``python manage.py loaddata faq_test_data.json``
 
 4. Run ``python manage.py runserver`` and you will have the example site up and
-   running. The home page will have links to get to the available views as well    
+   running. The home page will have links to get to the available views as well
    as to the admin.
 
 The capability to submit an FAQ is available and works whether or not you are a

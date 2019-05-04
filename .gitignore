@@ -1,9 +1,12 @@
+__pycache__
 *.pyc
 *.bak
 *.db
 *.egg-info
+.eggs
 .tox/
 .coverage
 htmlcov/
 docs/_build
+build/
 dist/

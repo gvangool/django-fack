@@ -1,9 +1,11 @@
 from __future__ import absolute_import
 
 import datetime
+
 import django.test
 from django.core.urlresolvers import reverse
-from ..models import Topic, Question
+
+from ..models import Question, Topic
 
 
 class FAQModelTests(django.test.TestCase):

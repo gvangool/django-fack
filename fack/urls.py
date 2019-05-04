@@ -1,5 +1,7 @@
 from __future__ import absolute_import
 
+from . import views
+
 try:
     from django.conf.urls.defaults import *
 except ImportError:
@@ -9,7 +11,6 @@ except ImportError:
         from django.conf.urls import patterns
     except ImportError:
         patterns = None
-from . import views
 
 urls = [
     url(regex=r"^$", view=views.TopicList.as_view(), name="faq_topic_list"),

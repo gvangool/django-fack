@@ -5,12 +5,11 @@ import datetime
 import django
 from django.conf import settings
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
 from django.utils.encoding import python_2_unicode_compatible
+from django.utils.translation import ugettext_lazy as _
 
 from .managers import QuestionManager, QuestionQuerySet
-
 
 AUTH_USER_MODEL = getattr(settings, "AUTH_USER_MODEL", "auth.User")
 

@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 
 from django import template
+
 from ..models import Question, Topic
 
 register = template.Library()

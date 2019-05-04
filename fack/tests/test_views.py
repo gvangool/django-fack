@@ -1,11 +1,13 @@
 from __future__ import absolute_import
 
 import datetime
+import os
+
 import django.test
 import mock
-import os
 from django.conf import settings
-from ..models import Topic, Question
+
+from ..models import Question, Topic
 
 
 class FAQViewTests(django.test.TestCase):

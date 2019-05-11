@@ -1,12 +1,12 @@
 from __future__ import absolute_import
 
-import datetime
 
 import django
 from django.conf import settings
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.urls import reverse
+from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
 
 from .managers import QuestionManager, QuestionQuerySet
@@ -83,7 +83,7 @@ class Question(models.Model):
         help_text=_("The order you would like the question to be displayed."),
     )
 
-    created_on = models.DateTimeField(_("created on"), default=datetime.datetime.now)
+    created_on = models.DateTimeField(_("created on"), default=now)
     updated_on = models.DateTimeField(_("updated on"))
     created_by = models.ForeignKey(
         AUTH_USER_MODEL,
@@ -115,7 +115,7 @@ class Question(models.Model):
 
     def save(self, *args, **kwargs):
         # Set the date updated.
-        self.updated_on = datetime.datetime.now()
+        self.updated_on = now()
 
         # Create a unique slug, if needed.
         if not self.slug:
